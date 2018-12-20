@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--<link rel="icon" href="../../../../favicon.ico">-->
+
+    <title>Electricity bill calculator</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/starter-template.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <main role="main" class="container">
+
+        <div class="starter-template">
+            <h1>Electricity bill calculator</h1>
+            <p class="lead">Use this app to calculate your bill.</p>
+        </div>
+
+        <form id="userDataForm">
+            <div class="form-group">
+                <label for="usage">Your tariff catagory</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Tariff category: </label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01">
+                        <option selected value="0">Domestic</option>
+                    </select>
+                </div>
+            </div>
+            <label for="usage">Your consumption</label>
+            <div class="input-group mb-3" id="input-group-consumption">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3">Usage</span>
+                </div>
+                <input type="text" class="form-control" id="usage" aria-describedby="basic-addon3" placeholder="Number of units per month">
+            </div>
+            <button type="submit" class="btn btn-primary" id="calcButton">Calculate</button><br>
+            <label>Your bill amount is: <span id="result"></span></label>
+        </form>
+
+    </main><!-- /.container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="js/calculator.js"></script>
+    <script src="js/support.js"></script>
+
+</body>
+
+</html>
