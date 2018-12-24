@@ -4,12 +4,14 @@ Applicable bill amount can be calculated using `calculateTariff()`.
 
 ## calculateTariff()
 Syntax: `calculateTariff(userTariffCatagory, usage)`
+
 parameters: 
 
  1. userTariffCatagory: id of the tariff catagory, listed in `tariffCatagoryList` as keys
  2. usage: number, or an array, depending on the tariff category. Value of the array is as follows: `[offPeakUsage, dayUsage, peakUsage, maxmimumDemand]`
 
 Returns: An object containing applicable charges in JSON format
+
 Examples: 
 Input:
 
