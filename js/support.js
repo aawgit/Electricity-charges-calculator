@@ -9,8 +9,6 @@ function createCatagoryOptions() {
     for (let catagory in tariffCatagoryList) {
         optionsList += '<option value="' + catagory + '">' + tariffCatagoryList[catagory].name + '</option>';
     }
-    //let catagoryOptions = document.getElementById('inputGroupSelect01');
-    //catagoryOptions.innerHTML = optionsList;
     return optionsList;
 }
 
@@ -26,45 +24,52 @@ function recordCatagoryInput(e) {
     tariffType = tariffCatagoryList[catagoryMenu.value].type;
     modifyUsageInputArea(tariffType);
     userInputs.type = tariffType;
+    clearResults();
 }
 
 
 function modifyUsageInputArea(type) {
     switch (type) {
         case 'ToU':
-            let ToUInputArea = '<div class="input-group-prepend">' +
-                '<span class="input-group-text" id="basic-addon3">Off peak</span>' +
-                '</div><input type = "text" class="form-control" id = "offPeak" aria - describedby="basic-addon3" placeholder = "Number of units per month">' +
-                '<br><div class="input-group-prepend">' +
-                '<span class="input-group-text" id="basic-addon3">Day</span>' +
-                '</div><input type = "text" class="form-control" id = "day" aria - describedby="basic-addon3" placeholder = "Number of units per month">' +
-                '<br><div class="input-group-prepend">' +
-                '<span class="input-group-text" id="basic-addon3">Peak</span>' +
-                '</div><input type = "text" class="form-control" id = "peak" aria - describedby="basic-addon3" placeholder = "Number of units per month">';
+            let ToUInputArea = '<label for="offPeak" class="col-sm-2 col-form-label">Off peak:</label>' +
+                '<div class="col-sm-10">' +
+                '<input type="text" class="form-control" id="offPeak" aria-describedby="basic-addon3" placeholder="Off peak consumption">' +
+                '</div>' +
+                '<label for="day" class="col-sm-2 col-form-label">Day:</label>' +
+                '<div class="col-sm-10">' +
+                '<input type="text" class="form-control" id="day" aria-describedby="basic-addon3" placeholder="Day consumption">' +
+                '</div>' +
+                '<label for="peak" class="col-sm-2 col-form-label">Peak:</label>' +
+                '<div class="col-sm-10">' +
+                '<input type="text" class="form-control" id="peak" aria-describedby="basic-addon3" placeholder="Peak consumption">' +
+                '</div>';
+
             if (tariffCatagoryList[catagoryMenu.value].hasOwnProperty('kVArate')) {
-                ToUInputArea += '<br><div class="input-group-prepend">' +
-                    '<span class="input-group-text" id="basic-addon3">Max. demand</span>' +
-                    '</div><input type = "text" class="form-control" id = "kVA" aria - describedby="basic-addon3" placeholder = "Maximum kVA reading">';
+                ToUInputArea +=
+                    '<label for="peak" class="col-sm-2 col-form-label">Max. demand:</label>' +
+                    '<div class="col-sm-10">' +
+                    '<input type="text" class="form-control" id="kVA" aria-describedby="basic-addon3" placeholder="Maximum kVA">' +
+                    '</div>';
             }
             document.getElementById('input-group-consumption').innerHTML = ToUInputArea;
             break;
         case 'block':
-            let blockInputArea = '<div class="input-group mb-3" id="input-group-consumption">' +
-                '<div class="input-group-prepend">' +
-                '<span class="input-group-text" id="basic-addon3">Usage</span>' +
-                '</div>' +
-                '<input type="text" class="form-control" id="usage" aria-describedby="basic-addon3" placeholder="Number of units per month">' +
-                '</div>';
+            let blockInputArea = '<label for="peak" class="col-sm-2 col-form-label">Usage:</label>' +
+            '<div class="col-sm-10">' +
+            '<input type="text" class="form-control" id="usage" aria-describedby="basic-addon3" placeholder="Number of units per month">' +
+            '</div>'
             document.getElementById('input-group-consumption').innerHTML = blockInputArea;
             break;
         case 'constant':
-            let constantInputArea = '<div class="input-group-prepend">' +
-                '<span class="input-group-text" id="basic-addon3">Usage</span>' +
-                '</div><input type = "text" class="form-control" id = "usage" aria - describedby="basic-addon3" placeholder = "Number of units per month">'
+            let constantInputArea = '<label for="peak" class="col-sm-2 col-form-label">Usage:</label>' +
+                '<div class="col-sm-10">' +
+                '<input type="text" class="form-control" id="usage" aria-describedby="basic-addon3" placeholder="Number of units per month">' +
+                '</div>';
             if (tariffCatagoryList[catagoryMenu.value].hasOwnProperty('kVArate')) {
-                constantInputArea += '<br><div class="input-group-prepend">' +
-                    '<span class="input-group-text" id="basic-addon3">Max. demand</span>' +
-                    '</div><input type = "text" class="form-control" id = "kVA" aria - describedby="basic-addon3" placeholder = "Maximum kVA reading">'
+                constantInputArea +=  '<label for="peak" class="col-sm-2 col-form-label">Max. demand:</label>' +
+                '<div class="col-sm-10">' +
+                '<input type="text" class="form-control" id="kVA" aria-describedby="basic-addon3" placeholder="Maximum kVA">' +
+                '</div>';
             }
             document.getElementById('input-group-consumption').innerHTML = constantInputArea;
             break;
@@ -103,5 +108,38 @@ function getUsage() {
     }
 }
 
+function printResult(result) {
+    let outputArea = '';
+    for (let property in result) {
+        if (result[property]) {
+            outputArea +=
+                '<li class="list-group-item d-flex justify-content-between lh-condensed">' +
+                '<div>' +
+                '<span>' + property + '</span>' +
+                '</div>' +
+                '<span class="text-muted">' + formatNumber(result[property]) + ' LKR </span>' +
+                '</li>'
+                ;
+            if (property === 'Total: ') {
+                outputArea +=
+                    '<li class="list-group-item d-flex justify-content-between lh-condensed">' +
+                    '<span> Total: </span>' +
+                    '<strong>' + formatNumber(result[property]) + ' LKR </strong>' +
+                    '</li>'
+                    ;
+            }
+        }
 
+    }
+    document.getElementById('charges-list').innerHTML = outputArea;
+}
+
+function formatNumber(number){
+    return accounting.formatMoney(number, { symbol: "",  format: "%v %s" });
+    //return Math.round(number*100)/100;
+}
+
+function clearResults(){
+    document.getElementById('charges-list').innerHTML = "";
+} 
 

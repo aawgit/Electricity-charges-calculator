@@ -4,6 +4,7 @@ http://www.pucsl.gov.lk/english/industries/electricity/electricity-tariffscharge
 
 document.getElementById('userDataForm').addEventListener('submit', calculate);
 
+
 function calculate(e) {
     e.preventDefault();
 
@@ -11,42 +12,36 @@ function calculate(e) {
     let userTariffCatagory = getTariffCatagory();
     let usage = getUsage();
 
-    //get catagory specs - tariff blocks, rates, type
+    printResult(calculateTariff(userTariffCatagory, usage));
+
+}
+
+function calculateTariff(userTariffCatagory, usage) {
     catagory = getCatagorySpecsNew(userTariffCatagory, usage);
+    let result = '';
 
     switch (catagory.type) {
         case 'block':
-            charges = calculateBlockTariff(usage, catagory);
-            total = charges[0] + charges[1];
-            document.getElementById('result').innerHTML = '<p>Energy charge: ' + charges[0] + ' LKR' +
-                '<br>Fixed charge: ' + charges[1] + ' LKR' +
-                '<br>Total: ' + total + ' LKR';
+            result = calculateBlockTariff(usage, catagory);
             break;
         case 'ToU':
-            charges = calculateToUTariff(usage, catagory);
-            total = charges[0] + charges[1] + charges[2];
-            document.getElementById('result').innerHTML = '<p>Energy charge: ' + charges[0] + ' LKR' +
-                '<br>Fixed charge: ' + charges[1] + ' LKR' +
-                '<br>Maximum demand charge: ' + charges[2] + ' LKR' +
-                '<br>Total: ' + total + ' LKR';
+            result = calculateToUTariff(usage, catagory);
             break;
         case 'constant':
-            charges = calculateConstantRateTariff(usage, catagory);
-            total = charges[0] + charges[1] + charges[2];
-            document.getElementById('result').innerHTML = '<p>Energy charge: ' + charges[0] + ' LKR' +
-                '<br>Fixed charge: ' + charges[1] + ' LKR' +
-                '<br>Maximum demand charge: ' + charges[2] + ' LKR' +
-                '<br>Total: ' + total + ' LKR';
+            result = calculateConstantRateTariff(usage, catagory);
             break;
     }
+    console.log(result);
+    return result;
 }
 
 
 function calculateBlockTariff(unCalculatedUsage, catagorySpecs) {
-
     let energyCharge = 0;
     let fixedCharge = 0;
+    let total = 0;
     let largestBlock = true;
+
     for (let i = catagorySpecs.blocks.length - 1; i >= 0; i--) {
         if (unCalculatedUsage > catagorySpecs.blocks[i]) {
             usageInCurrentBlock = unCalculatedUsage - catagorySpecs.blocks[i];
@@ -58,25 +53,40 @@ function calculateBlockTariff(unCalculatedUsage, catagorySpecs) {
             }
         }
     }
-    return [energyCharge, fixedCharge];
+    total = energyCharge + fixedCharge;
+    let result = {
+        'Energy charge: ': energyCharge,
+        'Fixed charge: ': fixedCharge,
+        'Total: ': total
+    };
+    return result;
 }
 
 
 function calculateToUTariff(unCalculatedUsage, catagorySpecs) {
-    console.log(unCalculatedUsage, catagorySpecs);
-    let energyCharge = 0;
-    let fixedCharge = 0;
-    let maximumDemandCharge = 0;
-    for (let i = 0; i < unCalculatedUsage.length - 1; i++) {
-        energyCharge += unCalculatedUsage[i] * catagorySpecs.ToURates[i];
-    }
+    let result = {
+        'Off peak charge: ': '',
+        'Day charge: ': '',
+        'Peak charge: ': '',
+        'Fixed charge: ': '',
+        'Maximum demand charge: ': '',
+        'Total: ': ''
+    };
+    //energyCharge += unCalculatedUsage[i] * catagorySpecs.ToURates[i];
+    result["Off peak charge: "] = unCalculatedUsage[0] * catagorySpecs.ToURates[0];
+    result["Day charge: "] = unCalculatedUsage[0] * catagorySpecs.ToURates[1];
+    result["Peak charge: "] = unCalculatedUsage[0] * catagorySpecs.ToURates[2];
+    result["Total: "] = result["Off peak charge: "] + result["Day charge: "] + result["Peak charge: "];
+
     if (catagorySpecs.fixedChargeRates) {
-        fixedCharge = catagorySpecs.fixedChargeRates;
+        result["Fixed charge: "] = catagorySpecs.fixedChargeRates;
+        result["Total: "] += result["Fixed charge: "];
     }
     if (catagorySpecs.kVArate) {
-        maximumDemandCharge = unCalculatedUsage[unCalculatedUsage.length - 1] * catagorySpecs.kVArate;
+        result["Maximum demand charge: "] = unCalculatedUsage[unCalculatedUsage.length - 1] * catagorySpecs.kVArate;
+        result["Total: "] += result["Maximum demand charge: "];
     }
-    return [energyCharge, fixedCharge, maximumDemandCharge];
+    return result;
 }
 
 
@@ -84,13 +94,21 @@ function calculateConstantRateTariff(unCalculatedUsage, catagorySpecs) {
     let energyCharge = 0;
     let fixedCharge = 0;
     let maximumDemandCharge = 0;
-
-    energyCharge = unCalculatedUsage[0] * catagorySpecs.constantRate;
-    fixedCharge = catagorySpecs.fixedChargeRates;
+    let result = {
+        'Energy charge: ': energyCharge,
+        'Fixed charge: ': fixedCharge,
+        'Maximum demand charge: ': '',
+        'Total: ': ''
+    };
+    result["Energy charge: "] = unCalculatedUsage[0] * catagorySpecs.constantRate;
+    result["Fixed charge: "] = catagorySpecs.fixedChargeRates;
+    result["Total: "] = result["Energy charge: "] + result["Fixed charge: "];
     if (catagorySpecs.kVArate) {
         maximumDemandCharge = unCalculatedUsage[1] * catagorySpecs.kVArate;
+        result["Maximum demand charge: "] = maximumDemandCharge;
+        result["Total: "] += result["Maximum demand charge: "];
     }
-    return [energyCharge, fixedCharge, maximumDemandCharge];
+    return result;
 }
 
 function getCatagorySpecs(userTariffCatagory, usage) {
