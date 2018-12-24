@@ -20,35 +20,35 @@
 <body>
 
     <main role="main" class="container">
-
-        <div class="starter-template">
-            <h1>Electricity bill calculator</h1>
-            <p class="lead">Use this app to calculate your bill.</p>
-        </div>
-
         <form id="userDataForm">
-            <div class="form-group">
-                <label for="usage">Your tariff catagory</label>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect01">Tariff category: </label>
-                    </div>
+            <div class="starter-template">
+                <h1>Electricity bill calculator</h1>
+                <p class="lead">Use this app to calculate your bill.</p>
+            </div>
+            <div class="form-group row">
+                <label for="select" class="col-sm-2 col-form-label">Tariff category:</label>
+                <div class="col-sm-10">
                     <select class="custom-select" id="inputGroupSelect01">
                         <option selected value="0">Domestic</option>
                     </select>
                 </div>
             </div>
-            <label for="usage">Your consumption</label>
-            <div class="input-group mb-3" id="input-group-consumption">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon3">Usage</span>
+            <div class="form-group row" id="input-group-consumption">
+                <label for="usage" class="col-sm-2 col-form-label">Consumption:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="usage" aria-describedby="basic-addon3" placeholder="Number of units per month">
                 </div>
-                <input type="text" class="form-control" id="usage" aria-describedby="basic-addon3" placeholder="Number of units per month">
             </div>
-            <button type="submit" class="btn btn-primary" id="calcButton">Calculate</button><br>
-            <label>Your bill amount is: <span id="result"></span></label>
+            <button type="submit" class="btn btn-primary" id="calcButton">Calculate</button>
         </form>
+        <br>
+        <div class="form-group row">
+            <div class="col-md-6 order-md-2 mb-4">
+                <ul class="list-group mb-3" id="charges-list">
 
+                </ul>
+            </div>
+        </div>
     </main><!-- /.container -->
 
     <!-- Bootstrap core JavaScript
@@ -62,6 +62,11 @@
         crossorigin="anonymous"></script>
     <script src="js/calculator.js"></script>
     <script src="js/support.js"></script>
+    <script src="js/accounting.min.js"></script>
+
+
+
+
 
 </body>
 
