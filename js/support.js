@@ -55,9 +55,9 @@ function modifyUsageInputArea(type) {
             break;
         case 'block':
             let blockInputArea = '<label for="peak" class="col-sm-2 col-form-label">Usage:</label>' +
-            '<div class="col-sm-10">' +
-            '<input type="text" class="form-control" id="usage" aria-describedby="basic-addon3" placeholder="Number of units per month">' +
-            '</div>'
+                '<div class="col-sm-10">' +
+                '<input type="text" class="form-control" id="usage" aria-describedby="basic-addon3" placeholder="Number of units per month">' +
+                '</div>'
             document.getElementById('input-group-consumption').innerHTML = blockInputArea;
             break;
         case 'constant':
@@ -66,10 +66,10 @@ function modifyUsageInputArea(type) {
                 '<input type="text" class="form-control" id="usage" aria-describedby="basic-addon3" placeholder="Number of units per month">' +
                 '</div>';
             if (tariffCatagoryList[catagoryMenu.value].hasOwnProperty('kVArate')) {
-                constantInputArea +=  '<label for="peak" class="col-sm-2 col-form-label">Max. demand:</label>' +
-                '<div class="col-sm-10">' +
-                '<input type="text" class="form-control" id="kVA" aria-describedby="basic-addon3" placeholder="Maximum kVA">' +
-                '</div>';
+                constantInputArea += '<label for="peak" class="col-sm-2 col-form-label">Max. demand:</label>' +
+                    '<div class="col-sm-10">' +
+                    '<input type="text" class="form-control" id="kVA" aria-describedby="basic-addon3" placeholder="Maximum kVA">' +
+                    '</div>';
             }
             document.getElementById('input-group-consumption').innerHTML = constantInputArea;
             break;
@@ -112,19 +112,20 @@ function printResult(result) {
     let outputArea = '';
     for (let property in result) {
         if (result[property]) {
-            outputArea +=
-                '<li class="list-group-item d-flex justify-content-between lh-condensed">' +
-                '<div>' +
-                '<span>' + property + '</span>' +
-                '</div>' +
-                '<span class="text-muted">' + formatNumber(result[property]) + ' LKR </span>' +
-                '</li>'
-                ;
             if (property === 'Total: ') {
                 outputArea +=
                     '<li class="list-group-item d-flex justify-content-between lh-condensed">' +
                     '<span> Total: </span>' +
                     '<strong>' + formatNumber(result[property]) + ' LKR </strong>' +
+                    '</li>'
+                    ;
+            } else {
+                outputArea +=
+                    '<li class="list-group-item d-flex justify-content-between lh-condensed">' +
+                    '<div>' +
+                    '<span>' + property + '</span>' +
+                    '</div>' +
+                    '<span class="text-muted">' + formatNumber(result[property]) + ' LKR </span>' +
                     '</li>'
                     ;
             }
@@ -134,12 +135,12 @@ function printResult(result) {
     document.getElementById('charges-list').innerHTML = outputArea;
 }
 
-function formatNumber(number){
-    return accounting.formatMoney(number, { symbol: "",  format: "%v %s" });
+function formatNumber(number) {
+    return accounting.formatMoney(number, { symbol: "", format: "%v %s" });
     //return Math.round(number*100)/100;
 }
 
-function clearResults(){
+function clearResults() {
     document.getElementById('charges-list').innerHTML = "";
-} 
+}
 
