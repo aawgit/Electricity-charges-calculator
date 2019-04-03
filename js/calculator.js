@@ -256,4 +256,3 @@ let calculator = (function() {
   };
 })();
 
-module.exports = calculator.calculateTariff;
