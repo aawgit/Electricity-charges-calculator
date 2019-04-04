@@ -1,10 +1,46 @@
 /*This script was written to calculate end user electricty charges in Sri Lanka.
 The rates are as per the approved tariffs as at 20/12/2018, referenced from 
-http://www.pucsl.gov.lk/english/industries/electricity/electricity-tariffscharges/ */
+http://www.pucsl.gov.lk/english/industries/electricity/electricity-tariffscharges/ 
 
-let calculator = (function() {
-  //parses user inputs and invokes calculate function
+The calculation assumes that billing period is 30 days. When it changes, the rates
+need to be adjusted in a linear manner*/
 
+/**
+ * @param {string} userTariffCatagory - Tariff catagory.
+ * @param {string | string[]} usage - Consumption in units (kWh).
+ * @returns {string} - Cost in LKR for the consuption.
+ */
+
+/** Tariff catagories:
+  *'domesticBlock',
+  'domesticToU',
+  'religious',
+  'industrial1Block',
+  'industrial1ToU',
+  'industrial2',
+  'industrial3',
+  'hotel1',
+  'hotel2',
+  'hotel3',
+  'general1',
+  'general2',
+  'general3',
+  'government1',
+  'government2',
+  'government3',
+  'dcFast',
+  'level2AC' 
+
+  Usage:
+  Case - domesticBlock, religious, industrial1Block, hotel1, general1: Block type tariff: total kWh
+  Case - domesticToU, industrial1ToU, industrial2, industrial3, hotel2, hotel3, general2, general3, 
+        'dcFast','level2AC': ToU type tariff: [off peak kWh, day kWh, peak kWh, kVA]
+  Case -'government1', 'government2', 'government3': Constant type tafiff: [total kWh, kVA]
+  */
+
+module.exports = calculate;
+
+function calculate(userTariffCatagory, usage) {
   //invokes relevent calculate function according to the tariff category type
   function calculateTariff(userTariffCatagory, usage) {
     catagory = getCatagorySpecs(userTariffCatagory, usage);
@@ -249,10 +285,5 @@ let calculator = (function() {
       type: "ToU"
     }
   };
-
-  return {
-    calculateTariff: calculateTariff,
-    tariffCatagoryList: tariffCatagoryList
-  };
-})();
-
+  return calculateTariff(userTariffCatagory, usage);
+}

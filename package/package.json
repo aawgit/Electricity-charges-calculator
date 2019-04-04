@@ -1,0 +1,17 @@
+{
+  "name": "tariff-calculator",
+  "version": "1.0.0",
+  "description": "Tariff calculator module.",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc mocha",
+    "report": "nyc report --reporter=html"
+  },
+  "author": "Akalanka Weerasooriya",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2",
+    "nyc": "^13.3.0"
+  }
+}
