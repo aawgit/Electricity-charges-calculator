@@ -1,4 +1,4 @@
-# Electricity-charges-calculator
+# Electricity-charges-calculator [![Build Status](https://travis-ci.org/aawgit/Electricity-charges-calculator.svg?branch=master)](https://travis-ci.org/aawgit/Electricity-charges-calculator)
 This repository contains the scripts and UI for calculating end user electricity charges applicable to customers served by utilities in Sri Lanka. The tariff is referenced from the Electricity Tariffs and Charges approved and published by the [Public Utilites Commission of Sri Lanka ](http://www.pucsl.gov.lk/english/industries/electricity/electricity-tariffscharges/).
 Applicable bill amount can be calculated using `calculateTariff()`.
 
